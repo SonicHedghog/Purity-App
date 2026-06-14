@@ -7,8 +7,8 @@ Everything is stored **locally on the device** — there is no backend and no ac
 
 ## Features
 
-- **Learn** — an in‑app browser to the Freedom Fight lessons, plus a "Create a Freedom Fight
-  account" link. The lessons URL is editable in‑app.
+- **Learn** — an in‑app browser to the fixed Freedom Fight lessons URL
+  (`https://app.thefreedomfight.org/courses`).
 - **Accountability Partners** — add partners by name + number or pick from your device
   contacts, then list, edit, delete, and reorder them.
 - **Triggered** — a big red button that immediately calls your first partner. No answer?
@@ -32,11 +32,18 @@ Everything is stored **locally on the device** — there is no backend and no ac
 
 ```bash
 npm install
-npm start        # then press i (iOS), a (Android), or scan the QR with Expo Go
+npm start        # then press i (iOS), a (Android), w (web), or scan the QR with Expo Go
 ```
 
-> Device features (calling, SMS, contacts, notifications) require a real device or a
-> simulator/emulator — they do not work in the web preview.
+For web testing:
+
+```bash
+npm run web
+```
+
+On web, app data is stored locally in the browser storage for that device/profile. Features
+that depend on native phone capabilities (contacts picker, direct calling, SMS composer, local
+notifications) may be unavailable or browser-dependent.
 
 ## Project scripts
 
