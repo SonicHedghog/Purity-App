@@ -3,20 +3,47 @@
   "version": "1.0.0",
   "main": "index.ts",
   "dependencies": {
+    "@expo/vector-icons": "^15.0.2",
+    "@react-native-async-storage/async-storage": "2.2.0",
+    "@react-native-community/datetimepicker": "9.1.0",
+    "@react-navigation/bottom-tabs": "^7.18.0",
+    "@react-navigation/native": "^7.3.1",
+    "@react-navigation/native-stack": "^7.17.3",
     "expo": "~56.0.11",
+    "expo-clipboard": "~56.0.4",
+    "expo-contacts": "~56.0.9",
+    "expo-device": "~56.0.4",
+    "expo-font": "~56.0.6",
+    "expo-notifications": "~56.0.17",
+    "expo-sms": "~56.0.3",
     "expo-status-bar": "~56.0.4",
+    "jest": "~29.7.0",
+    "jest-expo": "~56.0.5",
     "react": "19.2.3",
-    "react-native": "0.85.3"
+    "react-native": "0.85.3",
+    "react-native-safe-area-context": "~5.7.0",
+    "react-native-screens": "4.25.2",
+    "react-native-webview": "13.16.1"
   },
   "devDependencies": {
+    "@types/jest": "^29.5.14",
     "@types/react": "~19.2.2",
+    "eslint": "^9.39.4",
+    "eslint-config-expo": "^56.0.4",
+    "prettier": "^3.8.4",
     "typescript": "~6.0.3"
   },
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "typecheck": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "private": true
 }

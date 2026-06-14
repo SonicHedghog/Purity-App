@@ -1,17 +1,23 @@
 {
   "expo": {
-    "name": "purity-app",
+    "name": "Purity App",
     "slug": "purity-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "scheme": "purityapp",
     "userInterfaceStyle": "light",
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "org.sonichedghog.purityapp",
+      "infoPlist": {
+        "NSContactsUsageDescription": "Purity App uses your contacts so you can quickly add an accountability partner."
+      }
     },
     "android": {
+      "package": "org.sonichedghog.purityapp",
       "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
+        "backgroundColor": "#4C6EF5",
         "foregroundImage": "./assets/android-icon-foreground.png",
         "backgroundImage": "./assets/android-icon-background.png",
         "monochromeImage": "./assets/android-icon-monochrome.png"
@@ -20,6 +26,22 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "@react-native-community/datetimepicker",
+      [
+        "expo-contacts",
+        {
+          "contactsPermission": "Purity App uses your contacts so you can quickly add an accountability partner."
+        }
+      ],
+      [
+        "expo-notifications",
+        {
+          "color": "#4C6EF5"
+        }
+      ],
+      "expo-font"
+    ]
   }
 }
