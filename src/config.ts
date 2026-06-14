@@ -6,11 +6,10 @@
  * screen simply loads their site in a WebView so the user can sign in and view
  * the lessons they have access to.
  *
- * TODO: replace LESSONS_URL with the exact lessons URL once provided.
  */
 export const FREEDOM_FIGHT = {
   /** Where the WebView points for the actual lessons/videos. */
-  LESSONS_URL: 'https://thefreedomfight.org/ff-overview/',
+  LESSONS_URL: 'https://app.thefreedomfight.org/courses',
   /** Sign-up page for users who do not yet have an account. */
   SIGNUP_URL: 'https://thefreedomfight.org/create-account/',
   /** Public site home, used as a fallback. */
