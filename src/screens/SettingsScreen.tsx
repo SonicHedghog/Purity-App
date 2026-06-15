@@ -3,7 +3,16 @@ import DateTimePicker, {
   type DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
 import React, { useState } from 'react';
-import { Alert, Modal, Pressable, StyleSheet, Switch, Text, View } from 'react-native';
+import {
+  Alert,
+  Modal,
+  Platform,
+  Pressable,
+  StyleSheet,
+  Switch,
+  Text,
+  View,
+} from 'react-native';
 
 import { Button } from '../components/Button';
 import { Card } from '../components/Card';
@@ -177,13 +186,27 @@ export function SettingsScreen() {
             <View style={styles.modalCard}>
               <Text style={styles.modalTitle}>Pick a time</Text>
               <View style={styles.pickerWrap}>
-                <DateTimePicker
-                  value={pickerValue}
-                  mode="time"
-                  display="spinner"
-                  onChange={onPickerChange}
-                  textColor={colors.text}
-                />
+                {Platform.OS === 'web' ? (
+                  React.createElement('input', {
+                    type: 'time',
+                    value: `${String(pickerValue.getHours()).padStart(2, '0')}:${String(pickerValue.getMinutes()).padStart(2, '0')}`,
+                    onChange: (e: { target: { value: string } }) => {
+                      const [h, m] = e.target.value.split(':').map(Number);
+                      const d = new Date(pickerValue);
+                      d.setHours(h, m, 0, 0);
+                      setPickerValue(d);
+                    },
+                    style: { fontSize: 32, padding: 12, textAlign: 'center' },
+                  })
+                ) : (
+                  <DateTimePicker
+                    value={pickerValue}
+                    mode="time"
+                    display="spinner"
+                    onChange={onPickerChange}
+                    textColor={colors.text}
+                  />
+                )}
               </View>
               <Button label="Set reminder" onPress={applyPicker} />
               <Button label="Cancel" variant="ghost" onPress={() => setPickerTarget(null)} />

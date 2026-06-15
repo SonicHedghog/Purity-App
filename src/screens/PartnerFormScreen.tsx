@@ -1,7 +1,7 @@
 import { Ionicons } from '@expo/vector-icons';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import React, { useState } from 'react';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, Platform, StyleSheet, Text, View } from 'react-native';
 
 import { Button } from '../components/Button';
 import { Screen } from '../components/Screen';
@@ -65,19 +65,23 @@ export function PartnerFormScreen({ navigation, route }: Props) {
           : 'Enter a partner’s details, or import them from your contacts.'}
       </Text>
 
-      <Button
-        label="Pick from contacts"
-        variant="secondary"
-        onPress={handlePickContact}
-        icon={<Ionicons name="person-add" size={18} color={colors.text} />}
-        style={styles.pick}
-      />
+      {Platform.OS !== 'web' ? (
+        <>
+          <Button
+            label="Pick from contacts"
+            variant="secondary"
+            onPress={handlePickContact}
+            icon={<Ionicons name="person-add" size={18} color={colors.text} />}
+            style={styles.pick}
+          />
 
-      <View style={styles.divider}>
-        <View style={styles.line} />
-        <Text style={styles.dividerText}>or enter manually</Text>
-        <View style={styles.line} />
-      </View>
+          <View style={styles.divider}>
+            <View style={styles.line} />
+            <Text style={styles.dividerText}>or enter manually</Text>
+            <View style={styles.line} />
+          </View>
+        </>
+      ) : null}
 
       <TextField label="Name" value={name} onChangeText={setName} placeholder="e.g. Sam" />
       <TextField
