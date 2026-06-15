@@ -10,7 +10,7 @@ import { Card } from '../components/Card';
 import { Screen } from '../components/Screen';
 import { SectionHeader } from '../components/SectionHeader';
 import { TextField } from '../components/TextField';
-import { ensurePermissions, formatTime } from '../lib/notifications';
+import { ensurePermissions, formatTime, syncReminders } from '../lib/notifications';
 import { useAppState } from '../state/AppStateContext';
 import { colors, fontSize, spacing } from '../theme';
 
@@ -65,6 +65,9 @@ export function SettingsScreen() {
 
   const enableNotifications = async () => {
     const granted = await ensurePermissions();
+    if (granted) {
+      await syncReminders(reminders);
+    }
     Alert.alert(
       granted ? 'Notifications enabled' : 'Notifications blocked',
       granted

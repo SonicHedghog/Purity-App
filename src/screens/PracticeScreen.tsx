@@ -1,6 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import type { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Alert, StyleSheet, Text, View } from 'react-native';
 
 import { BraceWalkthrough } from '../components/BraceWalkthrough';
@@ -29,13 +29,14 @@ export function PracticeScreen({ navigation }: Props) {
   const selected: AccountabilityPartner | null =
     partners.find((p) => p.id === selectedId) ?? null;
 
-  // Auto-pick a random partner during render when none is chosen yet (or the
-  // chosen one was removed). This converges in a single render and avoids a
-  // setState-in-effect cascade.
-  if (partners.length > 0 && !selected) {
-    const next = pickRandomPartner(partners)?.id ?? null;
-    if (next !== selectedId) setSelectedId(next);
-  }
+  // Auto-pick a random partner in an effect when none is chosen yet (or the
+  // chosen one was removed).
+  useEffect(() => {
+    if (partners.length > 0 && !selected) {
+      const next = pickRandomPartner(partners)?.id ?? null;
+      if (next !== selectedId) setSelectedId(next);
+    }
+  }, [partners, selected, selectedId]);
 
   const shuffle = () =>
     setSelectedId(pickRandomPartner(partners, selectedId ?? undefined)?.id ?? null);

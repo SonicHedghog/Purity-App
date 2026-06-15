@@ -4,13 +4,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 
 import { FREEDOM_FIGHT } from '../config';
+import { useAppState } from '../state/AppStateContext';
 import { colors } from '../theme';
 
 export function LearnScreen() {
+  const { settings } = useAppState();
+
   return (
     <SafeAreaView style={styles.safe}>
       <WebView
-        source={{ uri: FREEDOM_FIGHT.LESSONS_URL }}
+        source={{ uri: settings.learnUrl || FREEDOM_FIGHT.LESSONS_URL }}
         startInLoadingState
         renderLoading={() => (
           <View style={styles.loading}>
