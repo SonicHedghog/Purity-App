@@ -5,14 +5,16 @@ import type { Reminder } from '../types';
 
 const ANDROID_CHANNEL_ID = 'purity-reminders';
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-    shouldShowBanner: true,
-    shouldShowList: true,
-  }),
-});
+if (Platform.OS !== 'web') {
+  Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+      shouldPlaySound: true,
+      shouldSetBadge: false,
+      shouldShowBanner: true,
+      shouldShowList: true,
+    }),
+  });
+}
 
 /** Format an hour/minute pair as a 12-hour clock string, e.g. "9:05 PM". */
 export function formatTime(hour: number, minute: number): string {
@@ -32,6 +34,7 @@ export function reminderToTrigger(reminder: Reminder): Notifications.DailyTrigge
 }
 
 export async function ensurePermissions(): Promise<boolean> {
+  if (Platform.OS === 'web') return false;
   const { status: existing } = await Notifications.getPermissionsAsync();
   let status = existing;
   if (existing !== 'granted') {
@@ -54,6 +57,7 @@ async function ensureAndroidChannel(): Promise<void> {
  * fully rebuild rather than diffing so the scheduled set always matches state.
  */
 export async function syncReminders(reminders: Reminder[]): Promise<boolean> {
+  if (Platform.OS === 'web') return true;
   const enabled = reminders.filter((r) => r.enabled);
 
   await Notifications.cancelAllScheduledNotificationsAsync();
