@@ -1,0 +1,13 @@
+export const View = 'View';
+export const Text = 'Text';
+export const TouchableOpacity = 'TouchableOpacity';
+export const TextInput = 'TextInput';
+export const FlatList = 'FlatList';
+export const Image = 'Image';
+export const ScrollView = 'ScrollView';
+export const Alert = { alert: jest.fn() };
+export const StyleSheet = { create: (styles: Record<string, unknown>) => styles };
+export const Platform = { OS: 'ios', select: jest.fn() };
+export const ActivityIndicator = 'ActivityIndicator';
+export const SafeAreaView = 'SafeAreaView';
+export const KeyboardAvoidingView = 'KeyboardAvoidingView';

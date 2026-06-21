@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "Virtufy Books",
+    "slug": "virtufy-books",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "light",
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Virtufy Books to access your camera to scan book pages."
+        }
+      ],
+      "expo-sqlite"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.virtufy.books",
+      "infoPlist": {
+        "NSCameraUsageDescription": "Virtufy Books needs camera access to photograph and digitize your book pages.",
+        "NSSpeechRecognitionUsageDescription": "Virtufy Books uses speech services to generate audiobooks from your scanned text."
+      }
+    },
+    "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#4A90D9",
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png"
+      },
+      "package": "com.virtufy.books",
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
+      ]
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
