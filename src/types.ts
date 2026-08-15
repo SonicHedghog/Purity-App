@@ -33,8 +33,36 @@ export type AppSettings = {
   onboarded: boolean;
 };
 
+/** An app the user has chosen to limit (Android package identity). */
+export type LimitedApp = {
+  packageName: string;
+  name: string;
+};
+
+/**
+ * An opaque Screen Time selection item (iOS). Tokens come from Apple's
+ * FamilyActivityPicker and cannot be inspected, only passed back to the API.
+ */
+export type IosLimitedItem = {
+  type: 'app' | 'category' | 'webDomain';
+  token: string;
+};
+
+export type AppLimits = {
+  enabled: boolean;
+  /** Shared daily usage budget across all limited apps, in minutes. 0 = fully blocked. */
+  dailyLimitMinutes: number;
+  /** Apps the limit applies to (Android). */
+  apps: LimitedApp[];
+  /** Local date key (YYYY-MM-DD) of the last day the daily budget was granted. */
+  lastGrantDate: string | null;
+  /** Selected Screen Time items to shield (iOS). */
+  iosItems: IosLimitedItem[];
+};
+
 export type PersistedState = {
   partners: AccountabilityPartner[];
   reminders: Reminder[];
   settings: AppSettings;
+  appLimits: AppLimits;
 };

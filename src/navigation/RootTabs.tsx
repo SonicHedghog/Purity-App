@@ -5,9 +5,9 @@ import React from 'react';
 import { colors, fontSize } from '../theme';
 import { LearnScreen } from '../screens/LearnScreen';
 import { PracticeScreen } from '../screens/PracticeScreen';
-import { SettingsScreen } from '../screens/SettingsScreen';
 import { TriggeredScreen } from '../screens/TriggeredScreen';
 import { PartnersStack } from './PartnersStack';
+import { SettingsStack } from './SettingsStack';
 import type { RootTabParamList } from './types';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
@@ -48,7 +48,11 @@ export function RootTabs() {
         options={{ title: 'Triggered', tabBarActiveTintColor: colors.danger }}
       />
       <Tab.Screen name="Practice" component={PracticeScreen} options={{ title: 'Practice' }} />
-      <Tab.Screen name="Settings" component={SettingsScreen} options={{ title: 'Settings' }} />
+      <Tab.Screen
+        name="Settings"
+        component={SettingsStack}
+        options={{ headerShown: false, title: 'Settings' }}
+      />
     </Tab.Navigator>
   );
 }

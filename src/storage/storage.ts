@@ -1,6 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { DEFAULT_PRACTICE_MESSAGE, FREEDOM_FIGHT } from '../config';
+import { defaultAppLimits } from '../lib/appLimits';
 import type { PersistedState } from '../types';
 
 const STORAGE_KEY = 'purity-app/state/v1';
@@ -13,6 +14,7 @@ export const defaultState: PersistedState = {
     learnUrl: FREEDOM_FIGHT.LESSONS_URL,
     onboarded: false,
   },
+  appLimits: defaultAppLimits,
 };
 
 /**
@@ -26,6 +28,10 @@ export function mergeWithDefaults(parsed: Partial<PersistedState> | null): Persi
     settings: {
       ...defaultState.settings,
       ...(parsed?.settings ?? {}),
+    },
+    appLimits: {
+      ...defaultState.appLimits,
+      ...(parsed?.appLimits ?? {}),
     },
   };
 }

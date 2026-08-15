@@ -41,7 +41,30 @@
           "color": "#4C6EF5"
         }
       ],
-      "expo-font"
+      "expo-font",
+      [
+        "expo-app-blocker",
+        {
+          "ios": {
+            "appGroup": "group.org.sonichedghog.purityapp",
+            "shield": {
+              "title": "Hold on",
+              "subtitle": "{appName} is limited. Purity App is helping you guard your time.",
+              "primaryButtonLabel": "Open Purity App",
+              "primaryButtonColor": "#4C6EF5"
+            }
+          },
+          "android": {
+            "overlayTitle": "App limited",
+            "overlayText": "{appName} is limited. Purity App is helping you guard your time.",
+            "overlayBackgroundColor": "#F6F8FC",
+            "overlayTitleColor": "#1A1B25",
+            "overlayTextColor": "#6B7280",
+            "notificationTitle": "App limited",
+            "notificationText": "{appName} is blocked until your next free time."
+          }
+        }
+      ]
     ]
   }
 }
