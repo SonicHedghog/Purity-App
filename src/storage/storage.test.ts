@@ -23,6 +23,14 @@ describe('mergeWithDefaults', () => {
     expect(merged.settings.onboarded).toBe(false);
     expect(merged.partners).toEqual([]);
   });
+
+  it('fills appLimits defaults for state persisted before the feature existed', () => {
+    const merged = mergeWithDefaults({ partners: [] });
+    expect(merged.appLimits).toEqual(defaultState.appLimits);
+    const partial = mergeWithDefaults({ appLimits: { enabled: true } as never });
+    expect(partial.appLimits.enabled).toBe(true);
+    expect(partial.appLimits.apps).toEqual([]);
+  });
 });
 
 describe('loadState / saveState', () => {

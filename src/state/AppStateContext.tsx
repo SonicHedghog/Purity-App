@@ -1,9 +1,16 @@
 import React, { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react';
 
+import { applyAndroidBlocking, isAppBlockerAvailable } from '../lib/appBlocker';
 import { createId, normalizeOrder, movePartner as movePartnerPure } from '../lib/partners';
 import { syncReminders } from '../lib/notifications';
 import { defaultState, loadState, saveState } from '../storage/storage';
-import type { AccountabilityPartner, AppSettings, PersistedState, Reminder } from '../types';
+import type {
+  AccountabilityPartner,
+  AppLimits,
+  AppSettings,
+  PersistedState,
+  Reminder,
+} from '../types';
 
 type PartnerInput = Pick<AccountabilityPartner, 'name' | 'phoneNumber'>;
 type ReminderInput = Pick<Reminder, 'hour' | 'minute' | 'label'>;
@@ -13,6 +20,7 @@ type AppStateContextValue = {
   partners: AccountabilityPartner[];
   reminders: Reminder[];
   settings: AppSettings;
+  appLimits: AppLimits;
   addPartner: (input: PartnerInput) => void;
   updatePartner: (id: string, input: PartnerInput) => void;
   removePartner: (id: string) => void;
@@ -25,6 +33,7 @@ type AppStateContextValue = {
   setLearnUrl: (url: string) => void;
   completeOnboarding: () => void;
   resetOnboarding: () => void;
+  updateAppLimits: (patch: Partial<AppLimits>) => void;
 };
 
 const AppStateContext = createContext<AppStateContextValue | null>(null);
@@ -60,6 +69,17 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
     void syncReminders(state.reminders);
   }, [state.reminders, hydrated]);
 
+  // Keep the native Android blocker in sync with the persisted limits so
+  // enforcement resumes on every app launch, not only after visiting the
+  // App Limits screen.
+  useEffect(() => {
+    if (!hydrated || !isAppBlockerAvailable()) return;
+    applyAndroidBlocking(
+      state.appLimits.apps.map((a) => a.packageName),
+      state.appLimits.enabled
+    );
+  }, [state.appLimits, hydrated]);
+
   const value = useMemo<AppStateContextValue>(() => {
     const updatePartners = (
       updater: (partners: AccountabilityPartner[]) => AccountabilityPartner[]
@@ -73,6 +93,7 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
       partners: state.partners,
       reminders: state.reminders,
       settings: state.settings,
+      appLimits: state.appLimits,
 
       addPartner: ({ name, phoneNumber }) =>
         updatePartners((partners) =>
@@ -142,6 +163,12 @@ export function AppStateProvider({ children }: { children: React.ReactNode }) {
         setState((prev) => ({
           ...prev,
           settings: { ...prev.settings, onboarded: false },
+        })),
+
+      updateAppLimits: (patch) =>
+        setState((prev) => ({
+          ...prev,
+          appLimits: { ...prev.appLimits, ...patch },
         })),
     };
   }, [state, hydrated]);

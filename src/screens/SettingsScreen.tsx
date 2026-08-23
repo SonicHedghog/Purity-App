@@ -1,4 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
+import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import DateTimePicker, {
   type DateTimePickerEvent,
 } from '@react-native-community/datetimepicker';
@@ -20,6 +21,7 @@ import { Screen } from '../components/Screen';
 import { SectionHeader } from '../components/SectionHeader';
 import { TextField } from '../components/TextField';
 import { ensurePermissions, formatTime, syncReminders } from '../lib/notifications';
+import type { SettingsStackParamList } from '../navigation/types';
 import { useAppState } from '../state/AppStateContext';
 import { colors, fontSize, spacing } from '../theme';
 
@@ -31,7 +33,9 @@ function dateFromHM(hour: number, minute: number): Date {
   return d;
 }
 
-export function SettingsScreen() {
+type Props = NativeStackScreenProps<SettingsStackParamList, 'SettingsHome'>;
+
+export function SettingsScreen({ navigation }: Props) {
   const {
     reminders,
     settings,
@@ -162,6 +166,21 @@ export function SettingsScreen() {
             multiline
           />
           <Button label="Save message" onPress={saveMessage} />
+        </Card>
+      </View>
+
+      <View style={styles.section}>
+        <SectionHeader
+          title="App limits"
+          subtitle="Block distracting apps after a daily time limit, like ScreenZen."
+        />
+        <Card style={styles.card}>
+          <Button
+            label="Manage app limits"
+            variant="secondary"
+            onPress={() => navigation.navigate('AppLimits')}
+            icon={<Ionicons name="hourglass" size={18} color={colors.text} />}
+          />
         </Card>
       </View>
 

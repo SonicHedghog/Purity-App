@@ -18,6 +18,10 @@ Everything is stored **locally on the device** — there is no backend and no ac
   message (default: _"I'm practicing brace"_) to a randomly selected partner and opens your
   messaging app.
 - **Daily reminders** — configurable, toggleable local notifications.
+- **App Limits** — ScreenZen‑style app blocking (Settings → Manage app limits): pick apps,
+  set a daily free‑time allowance, and the selected apps are blocked outside that allowance.
+  Fully functional on Android; iOS plumbing is included but stays inactive until Apple grants
+  the Family Controls entitlement (see below).
 - **Onboarding** — a first‑run tutorial that introduces each feature.
 
 ## Tech stack
@@ -27,6 +31,7 @@ Everything is stored **locally on the device** — there is no backend and no ac
 - AsyncStorage for local persistence
 - `expo-contacts`, `expo-sms`, `expo-notifications`, `react-native-webview`,
   `@react-native-community/datetimepicker`
+- `expo-app-blocker` for App Limits (Android UsageStats + overlay shield; iOS Family Controls)
 
 ## Getting started
 
@@ -65,8 +70,8 @@ src/
   components/            # reusable UI (Button, Card, BraceWalkthrough, …)
   config.ts              # URLs + default message
   lib/                   # pure logic: partners, brace, phone, messaging, notifications
-  navigation/            # bottom tabs + Partners stack
-  screens/               # Learn, Partners, Triggered, Practice, Settings, Onboarding
+  navigation/            # bottom tabs + Partners/Settings stacks
+  screens/               # Learn, Partners, Triggered, Practice, Settings, AppLimits, Onboarding
   state/                 # AppStateContext (load/save + actions)
   storage/               # AsyncStorage persistence
   theme/                 # colors, spacing, typography
@@ -84,3 +89,24 @@ every push and pull request to `main`.
   text — by design. The "next partner" button and the "open messaging app" flow reflect
   these OS limitations.
 - The Learn section links to Freedom Fight's own content; you sign in with your own account.
+
+## App Limits (native builds only)
+
+App Limits uses native system APIs that are **not** available in Expo Go or on web — the
+screen explains this and stays inert there. To use it, make a development or production
+build (the generated `android/`, `ios/`, and `targets/` folders are git‑ignored):
+
+```bash
+npx expo run:android   # or: eas build -p android
+```
+
+- **Android (functional now)** — requires two special permissions the screen walks you
+  through: _Usage access_ (to see which app is in the foreground) and _Display over other
+  apps_ (to show the blocking shield). A foreground service enforces the block; a daily
+  free‑time allowance can be spent once per day.
+- **iOS (dark until Apple approval)** — the code, entitlements
+  (`com.apple.developer.family-controls`, App Group `group.org.sonichedghog.purityapp`),
+  and Screen Time extension targets are all wired up, but Apple gates Family Controls
+  distribution behind a [special entitlement request](https://developer.apple.com/contact/request/family-controls-distribution)
+  tied to a paid developer account. Until that is granted (and `ios.appleTeamId` is set for
+  the extension targets), the iOS screen saves selections but cannot block apps.
